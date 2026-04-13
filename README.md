@@ -11,7 +11,7 @@ Your goal is to:
 - Evaluate what your system gets right and wrong
 - Reflect on how this mirrors real world AI recommenders
 
-Replace this paragraph with your own summary of what your version does.
+This project builds a small music recommender that scores songs by comparing each track to a user’s taste profile. The system uses genre, mood, energy range, tempo, and valence to rank songs from a CSV catalog and returns the highest-scoring matches.
 
 ---
 
@@ -47,7 +47,14 @@ After every song gets a score, the system sorts them from highest to lowest and 
 
 One thing I noticed while building this is that the system can accidentally lean too hard on certain features. For example, giving genre a big weight might cause it to ignore songs that actually match the user’s mood or energy really well. Even simple recommenders can develop little biases depending on how the scoring is set up.
 
+### Example Outputs
+![res1](res1.png)
+![res2](res2.png)
+![res3](res3.png)
+![res4](res4.png)
+![res5](res5.png)
 
+To me, the results feel pretty reasonable: **Gym Hero** can still win even though it isn’t the favorite genre because it nails the high-energy, fast-tempo vibe, and **Storm Runner** follows it for the same reason, but a classical song like **Symphony in D Minor** creeping in too high shows the genre weight might be overpowering the mood/energy fit a bit. 
 
 ---
 
@@ -88,23 +95,18 @@ You can add more tests in `tests/test_recommender.py`.
 
 ## Experiments You Tried
 
-Use this section to document the experiments you ran. For example:
-
-- What happened when you changed the weight on genre from 2.0 to 0.5
-- What happened when you added tempo or valence to the score
-- How did your system behave for different types of users
+- I tested three main profiles: a high-energy pop listener, a chill lofi listener, and a rock listener.
+- I added several edge-case profiles, including conflicting moods, genre mismatch, zero-width energy range, and reversed energy bounds.
+- I changed the scoring weights so energy mattered more and genre mattered less, then checked how the top songs shifted.
+- I compared the outputs to see whether the recommended songs matched the expected vibe for each profile.
 
 ---
 
 ## Limitations and Risks
 
-Summarize some limitations of your recommender.
-
-Examples:
-
-- It only works on a tiny catalog
-- It does not understand lyrics or language
-- It might over favor one genre or mood
+- The catalog is tiny, so recommendations are limited by the available songs.
+- The model is biased toward energy and tempo, which can hide mood or genre preferences.
+- The dataset has uneven genre coverage, so uncommon genres are less likely to appear.
 
 You will go deeper on this in your model card.
 

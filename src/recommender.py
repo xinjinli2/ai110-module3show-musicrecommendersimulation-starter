@@ -60,10 +60,10 @@ class Recommender:
         score = 0.0
         reasons = []
         
-        # Genre match: +2.0 points
+        # Genre match: +1.0 point (reduced importance)
         if song.genre == user.favorite_genre:
-            score += 2.0
-            reasons.append("genre match (+2.0)")
+            score += 1.0
+            reasons.append("genre match (+1.0)")
         
         # Liked mood: +1.0 point
         if song.mood in user.liked_moods:
@@ -75,13 +75,13 @@ class Recommender:
             score -= 2.0
             reasons.append("disliked mood (-2.0)")
         
-        # Energy closeness: up to +1.5 points
+        # Energy closeness: up to +3.0 points (increased importance)
         energy_min, energy_max = user.energy_range
         if energy_min <= song.energy <= energy_max:
-            energy_points = 1.5
+            energy_points = 3.0
         else:
             dist = min(abs(song.energy - energy_min), abs(song.energy - energy_max))
-            energy_points = max(0, 1.5 - 1.5 * (dist / 0.3))
+            energy_points = max(0, 3.0 - 3.0 * (dist / 0.3))
         score += energy_points
         reasons.append(f"energy closeness (+{energy_points:.2f})")
         
@@ -145,10 +145,10 @@ def score_song(user_prefs: Dict, song: Song) -> Tuple[float, List[str]]:
     score = 0.0
     reasons = []
     
-    # Genre match: +2.0 points
+    # Genre match: +1.0 point (reduced importance)
     if song.genre == user_prefs['favorite_genre']:
-        score += 2.0
-        reasons.append("genre match (+2.0)")
+        score += 1.0
+        reasons.append("genre match (+1.0)")
     
     # Liked mood: +1.0 point
     if song.mood in user_prefs['liked_moods']:
@@ -160,14 +160,14 @@ def score_song(user_prefs: Dict, song: Song) -> Tuple[float, List[str]]:
         score -= 2.0
         reasons.append("disliked mood (-2.0)")
     
-    # Energy closeness: up to +1.5 points
+    # Energy closeness: up to +3.0 points (increased importance)
     energy_min, energy_max = user_prefs['energy_range']
     if energy_min <= song.energy <= energy_max:
-        energy_points = 1.5
+        energy_points = 3.0
     else:
         # Simple closeness: distance to nearest bound
         dist = min(abs(song.energy - energy_min), abs(song.energy - energy_max))
-        energy_points = max(0, 1.5 - 1.5 * (dist / 0.3))  # Assuming 0.3 is max dist
+        energy_points = max(0, 3.0 - 3.0 * (dist / 0.3))  # Assuming 0.3 is max dist
     score += energy_points
     reasons.append(f"energy closeness (+{energy_points:.2f})")
     
