@@ -32,6 +32,7 @@ Prompts:
 
 Avoid code here. Pretend you are explaining the idea to a friend who does not program.
 
+
 ---
 
 ## 4. Data  

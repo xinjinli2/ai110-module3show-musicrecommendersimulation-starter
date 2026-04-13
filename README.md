@@ -17,17 +17,37 @@ Replace this paragraph with your own summary of what your version does.
 
 ## How The System Works
 
-Explain your design in plain language.
+This project is my small, simplified take on how music recommendations work. Instead of trying to copy everything a real platform does, I focused on the part that feels the most understandable: comparing what a user says they like to the features of each song. The system reads the user’s preferences, loops through every song in the CSV, and basically asks whether the song matches the vibe the user is going for. The closer the match, the higher the score.
 
-Some prompts to answer:
+Each `Song` in the dataset includes the following features:
+- genre
+- mood
+- energy
+- tempo_bpm
+- valence
+- danceability
+- acousticness
 
-- What features does each `Song` use in your system
-  - For example: genre, mood, energy, tempo
-- What information does your `UserProfile` store
-- How does your `Recommender` compute a score for each song
-- How do you choose which songs to recommend
+The `UserProfile` stores the user’s preferred version of these same features. The user can say what genre they like, what moods they enjoy, and what ranges they prefer for things like energy or tempo. When the recommender runs, it compares each song to these preferences. Genre and mood are treated as simple matches or mismatches, while the numerical features use a closeness score so songs that sit near the user’s preferred range get rewarded.
 
-You can include a simple diagram or bullet list if helpful.
+### Algorithm Recipe
+
+The scoring system follows a small recipe I put together:
+
+Genre match gives the song +2.0 points.  
+A liked mood adds +1.0 point.  
+A disliked mood subtracts -2.0 points.  
+Energy closeness can add up to +1.5 points depending on how close the song’s energy is to the user’s preferred range.  
+Tempo closeness can add up to +1.0 point.  
+Passing the user’s minimum valence adds +0.5 points.
+
+After every song gets a score, the system sorts them from highest to lowest and returns the top recommendations. The scoring rule handles how well a single song fits the user, and the ranking rule decides the final order once all the scores are in.
+
+### Potential Bias
+
+One thing I noticed while building this is that the system can accidentally lean too hard on certain features. For example, giving genre a big weight might cause it to ignore songs that actually match the user’s mood or energy really well. Even simple recommenders can develop little biases depending on how the scoring is set up.
+
+
 
 ---
 
